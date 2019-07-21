@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
 import {Input, Button} from 'reactstrap';
+// import openSocket from 'socket.io-client';
+import {raiseRefresh} from '../newFile'
+
+// const socket = openSocket('http://localhost:8000/');
+
+
 
 
 
@@ -7,8 +13,11 @@ import {Input, Button} from 'reactstrap';
 
 
 export default class CreateVacation extends Component {
-    state={
-        picture:[]
+    constructor(props){
+        super(props)
+        this.state={
+            picture:[]
+        }
     }
 
     componentDidMount() {
@@ -69,11 +78,14 @@ export default class CreateVacation extends Component {
             },
             body: JSON.stringify(this.state)
           });
+          debugger;
           const content = await rawResponse.json();
           console.log(content);
-          
+        //   socket.('refreshRequired', {})
+        raiseRefresh();
           alert('vacation created!')
-          this.props.refresh();
+          await this.props.refresh();
+          this.props.history.push('/allvacs')
     }
     
 }

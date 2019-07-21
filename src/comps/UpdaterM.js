@@ -1,15 +1,45 @@
 import React, { Component } from 'react'
 import {Input,Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import Vacation from './Vacation';
+import {raiseRefresh} from '../newFile'
 
 
 export default class UpdaterM extends Component {
-    state = {
-        modal:false,
-        ID:""
+    constructor(props){
+        super(props);
+        
+        this.state= {
+            modal:true,
+            ID:"",
+            picture:[]
+            // prevState:this.props.vacation
+
+        }
+        this.state = Object.assign(this.state,this.props.vacation)
+        console.log(this.state)
+        
+        this.uploadButton = React.createRef();
     }
+    
+    toggle() {
+        debugger;
+        if(this.state.modal ===true){
+            this.props.modalHandler();
+            debugger;
+        }
+        this.setState({
+          modal: !this.state.modal
+        });
+        
+    };
+
+    // componentWillUnmount() {
+    //     this.setState({modal:!this.state.modal})
+    // }
+    
 
     componentDidMount() {
+        console.log(this.state.modal)
+        
 
         var myWidget = window.cloudinary.createUploadWidget(
             {
@@ -24,37 +54,40 @@ export default class UpdaterM extends Component {
             }
         )
             
-            // document.getElementById("upload_widget").addEventListener("click", function(){
-            // myWidget.open();
-            // }, false);
+        this.uploadButton.current.addEventListener("click", function(){
+            myWidget.open();
+            }, false);
     }
+    componentWillUnmount() {
+    console.log('Modal unmount')
+}
 
 
 
 
     render() {
         return (
-            <div>
-                    <Modal isOpen={this.state.modal} toggle={this.props.toggler} className={this.props.className}>
-                        <ModalHeader toggle={this.toggle}>Edit vacation</ModalHeader>
+            
+                    <Modal isOpen={this.state.modal}  >
+                        <ModalHeader toggle={this.toggle.bind(this)}>Edit vacation</ModalHeader>
                         <ModalBody>
-                            <Input placeholder="Title" name="title" onChange={this.handleChange.bind(this)}/>
-                            <Input placeholder="Description" name="description" onChange={this.handleChange.bind(this)}/>
-                            <Input placeholder="Price" name="price" onChange={this.handleChange.bind(Vacation)}/>
+                            <Input placeholder={this.props.vacation.title} name="title" onChange={this.handleChange.bind(this)}/>
+                            <Input placeholder={this.props.vacation.description} name="description" onChange={this.handleChange.bind(this)}/>
+                            <Input placeholder={this.props.vacation.price} name="price" onChange={this.handleChange.bind(this)}/>
                 
-                            <button id="upload_widget" className="cloudinary-button">Upload Picture</button>
+                            <button ref={this.uploadButton} className="cloudinary-button">Upload Picture</button>
 
                             <Input placeholder="Start Date" type='date' name="startDate" onChange={this.handleChange.bind(this)}/>
                             <Input placeholder="End Date" type="date" name="endDate" onChange={this.handleChange.bind(this)}/>
 
                         </ModalBody>
                         <ModalFooter>
-                            <Button onClick={this.props.updater}>Save!</Button>
-                            <Button color="secondary" onClick={this.props.toggler}>Cancel</Button>
+                            <Button onClick={this.updateVacation.bind(this)}>Save!</Button>
+                            <Button color="secondary" onClick={this.toggle.bind(this)}>Cancel</Button>
                         </ModalFooter>
                     </Modal>
 
-            </div>
+            
         )
     }
     handleChange(ev){
@@ -65,7 +98,34 @@ export default class UpdaterM extends Component {
 
       }
 
+      updateVacation(){
+            debugger;
+            let sendObj = {...this.state}
+            for(let key in sendObj){
+                if(sendObj[key].lentgh === 0){
+                    sendObj[key] = this.props.vacation[key]
+                }
+            }
+            console.log(sendObj)
+            debugger;
+            this.toggle();
 
-      
+        
+            fetch('http://localhost:3000/vacation/updatevac', {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json',
+            "Accept":"application/json"},
+            body: JSON.stringify(sendObj)
+            })
+            .then(res => {
+                res.json();
+                raiseRefresh();
 
+            }) 
+            
+
+            // this.props.refresh();
+
+    
+    }
 }

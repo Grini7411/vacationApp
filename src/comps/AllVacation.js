@@ -17,13 +17,29 @@ export default class AllVacation extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        let url2 = "http://localhost:3000/vacation/checkuser"
+        const rawResponse = await fetch(url2)
+    
+        const data = await rawResponse.json();
+        if(data.msg==="not connected")
+        {
+            console.log('user is not connected');
+            this.props.history.push('/');
+        }
+        else{
+            
+            alert('Hello ' + data.username);   
+        }
+
         this.setState({followed: this.props.vacs.filter(v => v.followed),
             unfollowed:this.props.vacs.filter(v=>!v.followed)})
 
         this.props.refresh();
-
     }
+
+
+    
     componentWillReceiveProps(newProp){
         console.log(newProp)
         console.log(newProp.vacs)
@@ -35,38 +51,15 @@ export default class AllVacation extends Component {
     }
     
 
-    // async componentDidMount() {
-    //     debugger;
-        // let url2 = "http://localhost:3000/vacation/checkuser"
-        // const rawResponse = await fetch(url2)
-    
-        // const data = await rawResponse.json();
-        // if(data.msg==="not connected")
-        // {
-        //     console.log('user is not connected');
-        //     this.props.history.push('/');
-        // }
-        // else{
-        //     debugger;
-        //     alert('Hello' + data.username);
-        //     // this.props.hello(data.username);
-            
-        // }
-
-    
-
-    // }
     
     render() {
         return (
             <div>
-                {/* <h2>all vacations</h2> */}
-                {/* {this.props.vacs.map(v => <Vacation key={v.id} sort={this.sortCards.bind(this)} users={this.props.users} refresh={this.props.refresh} vac={v}/>)} */}
                 <div className="followed" >
                     {this.state.followed.map(v => <Vacation username={this.props.username} key={v.id} sort={this.sortUnFollowed.bind(this)} users={this.props.users} refresh={this.props.refresh} vac={v}/>)}
                 </div>
                 <div className="unfollowed" >
-                    {this.state.unfollowed.map(v => <Vacation key={v.id} sort={this.sortFollowed.bind(this)} users={this.props.users} refresh={this.props.refresh} vac={v}/>)}
+                    {this.state.unfollowed.map(v => <Vacation key={v.id} username={this.props.username} sort={this.sortFollowed.bind(this)} users={this.props.users} refresh={this.props.refresh} vac={v}/>)}
                 </div>
             </div>
             

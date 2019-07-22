@@ -20,13 +20,11 @@ export default class Graphs extends Component {
 
     async componentDidMount() {
         let vacations = this.props.vacs;
-        debugger;
+        
         let vacsArr = vacations.map(v => {
             return {"label":v.title,"y":v.followed}
         })
         await this.setState({vacsArr:vacsArr});
-        debugger;
-            
         };
     
 

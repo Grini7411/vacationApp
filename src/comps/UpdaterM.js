@@ -32,9 +32,6 @@ export default class UpdaterM extends Component {
         
     };
 
-    // componentWillUnmount() {
-    //     this.setState({modal:!this.state.modal})
-    // }
     
 
     componentDidMount() {
@@ -124,7 +121,7 @@ export default class UpdaterM extends Component {
             }) 
             
 
-            // this.props.refresh();
+            
 
     
     }

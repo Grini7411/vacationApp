@@ -33,7 +33,8 @@ export default class App extends Component {
       allusers:[],
       allgraphs:[],
       userConnected:{connect:false,username:""},
-      showLogin:false
+      showLogin:false,
+      isAdmin:false
     }
   }
 
@@ -87,7 +88,7 @@ async refresh(){
   
   // this.props.history.push('/allvacs')
 
-
+  this.checkType(this.state.userConnected.username);
 }
 
 
@@ -96,22 +97,33 @@ async refresh(){
 
   render() {
     const divStyle ={color:'white'}
-
+    
 
     var isLoggedIn = this.state.userConnected.connect;
     var user = this.state.userConnected.username;
     var Comp;
+    var addVac;
+    var graph;
     
     
     if(isLoggedIn === true){
     Comp = <span>
     <p className="connected">Welcome {user}</p>
-    <Button color="link" onClick={this.logout.bind(this)}>Log-out</Button>
-</span>
+    <Button color="link" onClick={this.logout.bind(this)}>Log-out</Button></span>;
+
+    
+
+      if(this.state.isAdmin === true){
+        addVac = <Link to="/vacre">Create Vacation</Link>;
+        graph = <Link to="/graph">Graph</Link>;
+
+      }
     }
     else{
       Comp = <Link to="/">Log -In</Link>
     }
+
+    
 
     return (
       <div >
@@ -124,18 +136,20 @@ async refresh(){
               <NavItem>
                 <Link to="/create">Create User</Link>
               </NavItem>
+
               <NavItem>
-                <Link to="/vacre">Create Vacation</Link>
+                {addVac}
               </NavItem>
-              
+                
               <NavItem>
                 <Link to="/allvacs">All Vacations</Link>
               </NavItem>
+
               <NavItem>
-                <Link to="/graph">Graph</Link>
+                {graph}
               </NavItem>
+
               <NavItem>
-                
                 {Comp}
               </NavItem>
 
@@ -159,10 +173,9 @@ async refresh(){
       </div>
     )
   }
-  // msgHello(name){
-  //   debugger;
-  //   return `Welcome ${name}`
-  // }
+  
+  
+  
   getLoginName(username,isConnected){
     this.setState(Object.assign(this.state.userConnected,{connect:isConnected,username:username}))
     
@@ -176,27 +189,28 @@ async refresh(){
     window.location.href = '/'
 
   }
+  async checkType(username){
+    let url1 = 'http://localhost:3000/vacation/jointypes';
+    let resp1 = await fetch(url1);
+    let data1 = await resp1.json();
+    
+    for (let i = 0; i < data1.length; i++) {
+      if(username === data1[i].userName){
+        
+          if(data1[i].type === 'admin'){
+          
+              await this.setState({isAdmin:true})
+          }
+          else{await this.setState({isAdmin:false})}
+        }
+      
+    }
+    }
 
+  }
   
-}
 
 
 
 
 
-
-// function getCookie(cname) {
-//   var name = cname + "=";
-//   var decodedCookie = decodeURIComponent(document.cookie);
-//   var ca = decodedCookie.split(';');
-//   for(var i = 0; i <ca.length; i++) {
-//     var c = ca[i];
-//     while (c.charAt(0) == ' ') {
-//       c = c.substring(1);
-//     }
-//     if (c.indexOf(name) == 0) {
-//       return c.substring(name.length, c.length);
-//     }
-//   }
-//   return "";
-// }

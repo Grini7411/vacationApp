@@ -11,7 +11,7 @@ export default class Vacation extends Component {
             tar:"",
             allcards:[],
             showComponent: false,
-            isAdmin:true
+            isAdmin:false
           }
         
     }
@@ -29,16 +29,19 @@ export default class Vacation extends Component {
         let url1 = 'http://localhost:3000/vacation/jointypes';
         let resp1 = await fetch(url1);
         let data1 = await resp1.json();
-
-        if(this.props.username === data1.userName){
-          debugger;
-          if(data1.type === 'admin'){
-            debugger;
-            this.setState({isAdmin:true})
-          }
-          else{this.setState({isAdmin:false})}
+        
+        for (let i = 0; i < data1.length; i++) {
+          if(this.props.username === data1[i].userName){
+            
+              if(data1[i].type === 'admin'){
+              
+                  this.setState({isAdmin:true})
+              }
+              else{ this.setState({isAdmin:false})}
+            }
+          
         }
-          }
+        }
     
     
 
@@ -49,8 +52,8 @@ export default class Vacation extends Component {
                 <Card id={this.props.vac.title} className="card-inline" >
                    
                     <div className="buttons">
-                        <Button onClick={this.modalHandler.bind(this)}  color="primary">edit</Button>
-                        <button className="delvac"  onClick={this.del.bind(this)}>X</button>
+                        <Button onClick={this.modalHandler.bind(this)} disabled={!this.state.isAdmin}  color="primary">edit</Button>
+                        <button className="delvac" disabled={!this.state.isAdmin} onClick={this.del.bind(this)}>X</button>
                     </div>
                     {this.state.showComponent ? <UpdaterM  vacation={this.props.vac} modalHandler={this.modalHandler.bind(this)}  cardId={this.props.vac.id} refresh={this.props.refresh} />:null
                     }
@@ -66,7 +69,7 @@ export default class Vacation extends Component {
                         </CardText>
                         
                         <div>
-                            <Input type="checkbox" name="check" defaultChecked={this.props.vac.followed} onClick={this.followVacation.bind(this)}/>
+                            <Input type="checkbox" disabled={this.state.isAdmin} name="check" defaultChecked={this.props.vac.followed} onClick={this.followVacation.bind(this)}/>
                             <Label for="exampleCheck" check>Follow Me!</Label>
                         </div>
                         
@@ -81,13 +84,13 @@ export default class Vacation extends Component {
     async del(ev){
         
         this.state.tar = ev.target.parentElement.parentElement.id;
-        debugger;
+        
         let resp = await fetch('http://localhost:3000/vacation/delvac', {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({tar:this.state.tar,vacID:this.props.vac.id})
         })
-        debugger;
+        
         alert("the vacation delete is complete")
         raiseRefresh();
         this.props.refresh()
@@ -100,10 +103,6 @@ export default class Vacation extends Component {
 
     async followVacation(ev){
         var savedTarget = ev.target;
-        // var userNum = parseInt(getCookie('id'));
-        
-        
-        // var httpBody = {vacID:this.state.vacID, userID:this.state.userID,vacCounter:this.state.vacCounter};
         var httpBody2 = {vacID:this.props.vac.id}
         
         if(savedTarget.checked){

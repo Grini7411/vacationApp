@@ -13,10 +13,10 @@ export default class LogIn extends Component {
       }
     
       async toggle1() {
-        debugger;
+        
         if(this.state.modal === true){
             this.props.modalHandler1();
-            debugger;
+            
         }
         await this.setState({
           modal: !this.state.modal
@@ -67,8 +67,6 @@ export default class LogIn extends Component {
            if(data.success === true){
             alert('User has been identified!!!')
             
-            // setCookie('username','Latin',50);
-            // setCookie('id',3,50);
             
             await this.props.refresh()
             this.props.getLoginName(data.userConnected.userName,data.success);

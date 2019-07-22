@@ -78,11 +78,10 @@ export default class CreateVacation extends Component {
             },
             body: JSON.stringify(this.state)
           });
-          debugger;
+          
           const content = await rawResponse.json();
           console.log(content);
-        //   socket.('refreshRequired', {})
-        raiseRefresh();
+          raiseRefresh();
           alert('vacation created!')
           await this.props.refresh();
           this.props.history.push('/allvacs')

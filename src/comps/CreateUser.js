@@ -85,7 +85,7 @@ export default class CreateUser extends Component {
         });
         const content = await rawResponse.json();
         console.log(content)
-        debugger;
+        
         alert('user created!');
         this.props.history.push('/allvacs');
       

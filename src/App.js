@@ -48,46 +48,28 @@ export default class App extends Component {
   
 async componentDidMount() {
 
-  // socket.on('refresh', async (data) => {
-  //   console.log('refresh receieved')
-  //   this.refresh()
-  // })
-
-
   this.refresh();
 }
 
 async refresh(){
-    // 
-    
     let url1 = 'http://localhost:3000/vacation/vacs';
     let resp1 = await fetch(url1);
     let data1 = await resp1.json();
     this.setState({allvacs:data1})
-    console.log('got all vacs!')
-    console.log(data1)
-    
-    // console.log(data1.msg);
-  
-  // })
 
-
-
-  //get all users:
+  // get all users:
   let url2 = 'http://localhost:3000/vacation/getallusers';
   let resp2 = await fetch(url2);
   let data2 = await resp2.json();
   this.setState({allusers:data2})
   
 
-  //for the graphs
+  // for the graphs
   let url3 = 'http://localhost:3000/vacation/vacs_graph';
   let resp3 = await fetch(url3);
   let data3 = await resp3.json();
   await this.setState({allgraphs:data3})
   
-  // this.props.history.push('/allvacs')
-
   this.checkType(this.state.userConnected.username);
 }
 
@@ -96,7 +78,7 @@ async refresh(){
   
 
   render() {
-    const divStyle ={color:'white'}
+    const divStyle = {color:'white'}
     
 
     var isLoggedIn = this.state.userConnected.connect;

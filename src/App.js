@@ -9,13 +9,6 @@ import LogIn from './comps/LogIn';
 import AllVacation from './comps/AllVacation';
 import './App.css'
 import Graphs from './comps/Graphs';
-// import openSocket from 'socket.io-client';
-
-
-// const socket = openSocket('http://localhost:8000/');
-
-
-
 
 
 export default class App extends Component {

@@ -88,25 +88,19 @@ async refresh(){
     var graph;
     
     
-    if(isLoggedIn === true){
+    if (isLoggedIn === true) {
     Comp = <span>
     <p className="connected">Welcome {user}</p>
     <Button color="link" onClick={this.logout.bind(this)}>Log-out</Button></span>;
-
-    
-
       if(this.state.isAdmin === true){
         addVac = <Link to="/vacre">Create Vacation</Link>;
         graph = <Link to="/graph">Graph</Link>;
 
       }
     }
-    else{
+    else {
       Comp = <Link to="/">Log -In</Link>
     }
-
-    
-
     return (
       <div >
         
@@ -149,9 +143,6 @@ async refresh(){
           <Route path="/vacre" render={(props)=><CreateVacation {...props} refresh={this.refresh.bind(this)}/>}></Route>
           <Route path="/allvacs" render={(props) => <AllVacation {...props} users={this.state.allusers} username={this.state.userConnected.username}  refresh={this.refresh.bind(this)} vacs={this.state.allvacs}/>}></Route>
           <Route path="/graph" render={(props) => <Graphs {...props} vacs={this.state.allgraphs}/>}></Route>
-        
-
-        
       </div>
     )
   }
@@ -191,8 +182,3 @@ async refresh(){
 
   }
   
-
-
-
-
-

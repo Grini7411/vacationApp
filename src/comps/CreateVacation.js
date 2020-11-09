@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import {Input, Button} from 'reactstrap';
-// import openSocket from 'socket.io-client';
 import {raiseRefresh} from '../newFile'
-
-// const socket = openSocket('http://localhost:8000/');
-
-
-
-
-
-
-
 
 export default class CreateVacation extends Component {
     constructor(props){

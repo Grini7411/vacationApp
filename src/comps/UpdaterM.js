@@ -15,7 +15,6 @@ export default class UpdaterM extends Component {
 
         }
         this.state = Object.assign(this.state,this.props.vacation)
-        console.log(this.state)
         
         this.uploadButton = React.createRef();
     }
@@ -35,9 +34,6 @@ export default class UpdaterM extends Component {
     
 
     componentDidMount() {
-        console.log(this.state.modal)
-        
-
         var myWidget = window.cloudinary.createUploadWidget(
             {
             cloudName: 'dxyrc1vmi', 

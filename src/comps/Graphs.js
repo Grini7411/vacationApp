@@ -3,21 +3,14 @@ import CanvasJSReact from '../canvasjs-2.3.2/canvasjs.react'
  var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-
-//create graphs
-
-
-
+// create graphs
 export default class Graphs extends Component {
     constructor(props){
         super(props)
         this.state = {
             vacsArr:[]
         }
-
-        
     }
-
     async componentDidMount() {
         let vacations = this.props.vacs;
         
@@ -25,11 +18,7 @@ export default class Graphs extends Component {
             return {"label":v.title,"y":v.followed}
         })
         await this.setState({vacsArr:vacsArr});
-        };
-    
-
-    
-
+      };
     render() {
         
         const options = {

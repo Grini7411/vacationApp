@@ -17,7 +17,6 @@ export default class App extends Component {
     super(props)
     
     subscribeToRefresh(() => {
-      console.log('refresh required')
       this.refresh()
     });
 

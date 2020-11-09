@@ -15,42 +15,31 @@ export default class Vacation extends Component {
           }
         
     }
-    
-
     modalHandler() {
         this.setState({
           showComponent: !this.state.showComponent,
         });
-        
       }
-
-
-      async componentDidMount(){
+      async componentDidMount() {
         let url1 = 'http://localhost:3000/vacation/jointypes';
         let resp1 = await fetch(url1);
         let data1 = await resp1.json();
         
         for (let i = 0; i < data1.length; i++) {
-          if(this.props.username === data1[i].userName){
+          if (this.props.username === data1[i].userName) {
             
-              if(data1[i].type === 'admin'){
+              if (data1[i].type === 'admin') {
               
                   this.setState({isAdmin:true})
               }
               else{ this.setState({isAdmin:false})}
             }
-          
         }
-        }
-    
-    
-
-
+    }
     render() {
         return (
             <div>
                 <Card id={this.props.vac.title} className="card-inline" >
-                   
                     <div className="buttons">
                         <Button onClick={this.modalHandler.bind(this)} disabled={!this.state.isAdmin}  color="primary">edit</Button>
                         <button className="delvac" disabled={!this.state.isAdmin} onClick={this.del.bind(this)}>X</button>
@@ -80,11 +69,8 @@ export default class Vacation extends Component {
         )
     }
 
-
     async del(ev){
-        
         this.state.tar = ev.target.parentElement.parentElement.id;
-        
         let resp = await fetch('http://localhost:3000/vacation/delvac', {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
@@ -95,20 +81,12 @@ export default class Vacation extends Component {
         raiseRefresh();
         this.props.refresh()
         const data = await resp.json();
-        
-        
-
     }
-
 
     async followVacation(ev){
         var savedTarget = ev.target;
         var httpBody2 = {vacID:this.props.vac.id}
-        
         if(savedTarget.checked){
-            
-            
-            
             let url = "http://localhost:3000/vacation/addtofollow";
             const rawResponse = await fetch(url, {
               method: 'POST',
@@ -122,10 +100,8 @@ export default class Vacation extends Component {
             alert(`the count of vacs is ${data.counter}`)
             // await this.setState({vacCounter:data.counter})
             this.props.sort(this.props.vac.id);
-  
         }
         else{
-            
              let resp = await fetch('http://localhost:3000/vacation/delfollow', {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
@@ -134,36 +110,12 @@ export default class Vacation extends Component {
                 let data1 = await resp.json();
                 this.props.sort(this.props.vac.id);
                 alert('the vacation deleted from following')
-        
         }
     }
-
-
-
 }
-
-
 
 function dateFormatter(date)
 {
     let formatted = new Date(date);
     return `${formatted.getDate()}/${formatted.getMonth()+1}/${formatted.getFullYear()}`
 }
-
-
-// function getCookie(cname) {
-//   var name = cname + "=";
-//   var decodedCookie = decodeURIComponent(document.cookie);
-//   var ca = decodedCookie.split(';');
-//   for(var i = 0; i <ca.length; i++) {
-//     var c = ca[i];
-//     while (c.charAt(0) == ' ') {
-//       c = c.substring(1);
-//     }
-//     if (c.indexOf(name) == 0) {
-//       return c.substring(name.length, c.length);
-//     }
-//   }
-//   return "";
-// }
-

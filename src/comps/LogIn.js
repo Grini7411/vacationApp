@@ -8,10 +8,7 @@ export default class LogIn extends Component {
         this.state = {
           modal: true
         };
-    
-        
       }
-    
       async toggle1() {
         
         if(this.state.modal === true){
@@ -21,7 +18,6 @@ export default class LogIn extends Component {
         await this.setState({
           modal: !this.state.modal
         });
-        
     };
     
       render() {
